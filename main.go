@@ -26,6 +26,7 @@ type watchedConn struct {
 }
 
 func (w *watchedConn) Close() error {
+	fmt.Println("CLOSE")
 	fmt.Printf("watchedConn Close()=start; connCount:%d\n", connCount)
 	//NOTE: this counter doesn't seem to work!!!
 	atomic.AddInt64(&connCount, -1)
@@ -63,8 +64,10 @@ func main() {
 	go func() {
 		<-stop
 		fmt.Println("close at=start")
+		fmt.Printf("close type:%T \n", wListener)
 		closeErr := wListener.Close()
 		if closeErr != nil {
+			fmt.Println("close at=panic")
 			panic(closeErr)
 		}
 		fmt.Println("close at=finish")
